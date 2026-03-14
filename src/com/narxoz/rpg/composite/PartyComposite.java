@@ -34,7 +34,7 @@ public class PartyComposite implements CombatNode {
         List<CombatNode> alive = getAliveChildren();
         if (alive.isEmpty()) return;
 
-        // Distribute damage evenly among alive members
+
         int damagePerChild = amount / alive.size();
         for (CombatNode child : alive) {
             child.takeDamage(damagePerChild);
