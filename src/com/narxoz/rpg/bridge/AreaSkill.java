@@ -9,7 +9,7 @@ public class AreaSkill extends Skill {
 
     @Override
     public void cast(CombatNode target) {
-        int damage = resolvedDamage();cd ~/IdeaProjects/homework-4
+        int damage = resolvedDamage();
         target.takeDamage(damage);
     }
 }
