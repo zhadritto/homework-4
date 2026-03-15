@@ -10,6 +10,18 @@ public class AreaSkill extends Skill {
     @Override
     public void cast(CombatNode target) {
         int damage = resolvedDamage();
-        target.takeDamage(damage);
+        applyAoeDamage(target, damage);
+    }
+
+    private void applyAoeDamage(CombatNode node, int damage) {
+        if (node.getChildren().isEmpty()) {
+            node.takeDamage(damage);
+        } else {
+            for (CombatNode child : node.getChildren()) {
+                if (child.isAlive()) {
+                    applyAoeDamage(child, damage);
+                }
+            }
+        }
     }
 }

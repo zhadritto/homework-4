@@ -18,14 +18,22 @@ public class RaidEngine {
         int round = 1;
         while (teamA.isAlive() && teamB.isAlive() && round <= 20) {
             result.addLine("Round " + round + ":");
-            result.addLine(" > " + teamA.getName() + " uses " + skillA.getSkillName() + " (" + skillA.getEffectName() + ")");
-            skillA.cast(teamB);
-            result.addLine("   " + teamB.getName() + " collective HP: " + teamB.getHealth());
+            boolean teamAGoesFirst = random.nextBoolean();
 
-            if (!teamB.isAlive()) break;
-            result.addLine(" > " + teamB.getName() + " uses " + skillB.getSkillName() + " (" + skillB.getEffectName() + ")");
-            skillB.cast(teamA);
-            result.addLine("   " + teamA.getName() + " collective HP: " + teamA.getHealth());
+            CombatNode first = teamAGoesFirst ? teamA : teamB;
+            CombatNode second = teamAGoesFirst ? teamB : teamA;
+            Skill firstSkill = teamAGoesFirst ? skillA : skillB;
+            Skill secondSkill = teamAGoesFirst ? skillB : skillA;
+
+            result.addLine(" > " + first.getName() + " uses " + firstSkill.getSkillName() + " (" + firstSkill.getEffectName() + ")");
+            firstSkill.cast(second);
+            result.addLine("   " + second.getName() + " collective HP: " + second.getHealth());
+
+            if (!second.isAlive()) break;
+
+            result.addLine(" > " + second.getName() + " uses " + secondSkill.getSkillName() + " (" + secondSkill.getEffectName() + ")");
+            secondSkill.cast(first);
+            result.addLine("   " + first.getName() + " collective HP: " + first.getHealth());
 
             round++;
         }
