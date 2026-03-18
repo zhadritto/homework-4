@@ -3,6 +3,7 @@ package com.narxoz.rpg.bridge;
 import com.narxoz.rpg.composite.CombatNode;
 
 public class AreaSkill extends Skill {
+
     public AreaSkill(String skillName, int basePower, EffectImplementor effect) {
         super(skillName, basePower, effect);
     }
@@ -10,17 +11,17 @@ public class AreaSkill extends Skill {
     @Override
     public void cast(CombatNode target) {
         int damage = resolvedDamage();
-        applyAoeDamage(target, damage);
+        applyAoe(target, damage);
     }
 
-    private void applyAoeDamage(CombatNode node, int damage) {
+    private void applyAoe(CombatNode node, int damage) {
+        if (!node.isAlive()) return;
+
         if (node.getChildren().isEmpty()) {
             node.takeDamage(damage);
         } else {
             for (CombatNode child : node.getChildren()) {
-                if (child.isAlive()) {
-                    applyAoeDamage(child, damage);
-                }
+                applyAoe(child, damage);
             }
         }
     }
